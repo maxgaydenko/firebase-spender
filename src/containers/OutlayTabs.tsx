@@ -26,11 +26,6 @@ export const OutlayTabs: React.FC<IProps> = ({outlayId, outlay}) => {
     aria-label="nav tabs example"
    >
     <Tab label={outlay.name} href={"/outlay/" + outlayId} />
-    {outlay.sections.length > 1 && (
-     outlay.sections.map((section, idx) => (
-      <Tab key={idx} label={section} href={"/outlay/"+outlayId+"/"+section} />
-     ))
-    )}
    </Tabs>
   </AppBar>
  )

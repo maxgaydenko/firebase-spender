@@ -24,8 +24,8 @@ export const OutlayEdit: React.FC<IProps> = ({outlayId, outlay}) => {
  const dispatch = useDispatch<OutlaysThunkDispatch>();
  const history = useHistory();
 
- const saveOutlay = async (name: string, sections: string[]): Promise<boolean> => {
-  const ok = await dispatch(outlayUpdate(outlayId, {...outlay, name, sections}));
+ const saveOutlay = async (name: string): Promise<boolean> => {
+  const ok = await dispatch(outlayUpdate(outlayId, {...outlay, name}));
   if(ok)
    history.push('/outlay/'+outlayId);
   return ok;

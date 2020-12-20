@@ -30,7 +30,7 @@ export const OutlayBox: React.FC<IProps> = ({outlayId, outlay, records, tags}) =
  const newOutlayRecord = (): IOutlayRecord => {
   return {
    id: NEW_ID,
-   section: (outlay.sections && outlay.sections[0]) ? outlay.sections[0] : "",
+  //  section: (outlay.sections && outlay.sections[0]) ? outlay.sections[0] : "",
    when: dateToString(new Date()),
    price: 0,
    tags: [],
@@ -58,7 +58,8 @@ export const OutlayBox: React.FC<IProps> = ({outlayId, outlay, records, tags}) =
  const dialogHide = () => {
   setDialogVisible(false);
  }
- const [filter, setFilter] = React.useState<IOutlayFilter>({section: "", comment: "", tags: []});
+//  const [filter, setFilter] = React.useState<IOutlayFilter>({section: "", comment: "", tags: []});
+ const [filter, setFilter] = React.useState<IOutlayFilter>({comment: "", tags: []});
  const updateFilter = (filter: IOutlayFilter) => {
   setFilter(filter);
  }
@@ -78,8 +79,8 @@ export const OutlayBox: React.FC<IProps> = ({outlayId, outlay, records, tags}) =
 
  // const filterBadge: number = filter.tags.length + (filter.section ? 1 : 0);
  const filteredRecords = records.filter(f => {
-  if (Boolean(filter.section) && f.section !== filter.section)
-   return false;
+  // if (Boolean(filter.section) && f.section !== filter.section)
+  //  return false;
   if (filter.tags.length > 0) {
    for (let i = 0; i < filter.tags.length; i++) {
     if (!f.tags || f.tags.indexOf(filter.tags[i]) < 0)
@@ -104,8 +105,9 @@ export const OutlayBox: React.FC<IProps> = ({outlayId, outlay, records, tags}) =
      </Typography>
      {/*<Link to={`/outlay/${outlay.id}/edit`}><SettingsIcon /></Link>*/}
     </Box>
-    <OutlayFilter filter={filter} updateFilter={updateFilter}
-                  outlaySections={outlay.sections} outlayTags={Object.keys(tags)}/>
+    <OutlayFilter filter={filter} 
+                  updateFilter={updateFilter}
+                  outlayTags={Object.keys(tags)}/>
    </Container>
    <OutlayList outlay={outlay} records={filteredRecords} onAddClick={addClick} onChangeClick={changeClick}/>
    <OutlayRecordForm open={dialogVisible}

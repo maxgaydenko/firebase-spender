@@ -12,7 +12,7 @@ interface IProps {
 export const PriceInput: React.FC<IProps> = (props: IProps) => {
  const {inputRef, onChange, ...other} = props;
  const thousandSeparator = props.thousandSeparator || " ";
- const suffix = props.suffix || " ₽";
+ // const suffix = props.suffix || " ₽";
 
  return (
   <NumberFormat {...other}
@@ -27,7 +27,7 @@ export const PriceInput: React.FC<IProps> = (props: IProps) => {
                 }}
                 isNumericString
                 thousandSeparator={thousandSeparator}
-                suffix={suffix}
+                suffix={props.suffix}
   />
  );
 }

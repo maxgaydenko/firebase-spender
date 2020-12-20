@@ -20,7 +20,8 @@ interface SectionMap {
 
 interface IProps {
  outlay: IOutlay
- saveHandler: (name: string, sections: string[]) => Promise<boolean>
+//  saveHandler: (name: string, sections: string[]) => Promise<boolean>
+ saveHandler: (name: string) => Promise<boolean>
  deleteHandler?: () => Promise<boolean>
 }
 
@@ -29,12 +30,12 @@ const checkForm = (name: string): boolean => Boolean(name.trim());
 export const OutlayForm: React.FC<IProps> = ({outlay, saveHandler, deleteHandler}) => {
  const classes = useOutlayStyles();
  const [name, setName] = React.useState<string>("");
- const [sections, setSections] = React.useState<string>("");
+//  const [sections, setSections] = React.useState<string>("");
  const [deleteDialogOpen, setDeleteDialogOpen] = React.useState<boolean>(false);
 
  React.useEffect(() => {
   setName(outlay.name);
-  setSections(outlay.sections? outlay.sections.join("\n"): "");
+  // setSections(outlay.sections? outlay.sections.join("\n"): "");
   setDeleteDialogOpen(false);
  }, [outlay]);
 
@@ -55,16 +56,17 @@ export const OutlayForm: React.FC<IProps> = ({outlay, saveHandler, deleteHandler
  const submitForm = (e: any) => {
   e.preventDefault();
   if (name.trim()) {
-   const sectionsMap: SectionMap = sections.split("\n").reduce((p, c) => {
-    const n = c.trim();
-    if (n) {
-     if (!p[n])
-      p[n] = 0;
-     p[n]++;
-    }
-    return p;
-   }, {} as SectionMap);
-   saveHandler(name, Object.keys(sectionsMap));
+  //  const sectionsMap: SectionMap = sections.split("\n").reduce((p, c) => {
+  //   const n = c.trim();
+  //   if (n) {
+  //    if (!p[n])
+  //     p[n] = 0;
+  //    p[n]++;
+  //   }
+  //   return p;
+  //  }, {} as SectionMap);
+  //  saveHandler(name, Object.keys(sectionsMap));
+   saveHandler(name);
   }
  }
 
@@ -75,13 +77,18 @@ export const OutlayForm: React.FC<IProps> = ({outlay, saveHandler, deleteHandler
                value={name}
                onChange={e => setName(e.target.value)}/>
    </FormControl>
-   <FormControl fullWidth className={classes.outlayFormItem}>
+   {/* <FormControl fullWidth className={classes.outlayFormItem}>
+    <TextField label={"Валюта"}
+               value={currency}
+               onChange={e => setCurrency(e.target.value)}/>
+   </FormControl> */}
+   {/* <FormControl fullWidth className={classes.outlayFormItem}>
     <TextField label={"Разделы"}
                multiline
                rowsMax={10}
                value={sections}
                onChange={e => setSections(e.target.value)}/>
-   </FormControl>
+   </FormControl> */}
    <Box className={classes.outlayFormActions}>
     <Button variant={"contained"} color={"primary"} disabled={!checkForm(name)} type={"submit"} onClick={submitForm}>Сохранить</Button>
     {deleteHandler && <Button onClick={deleteClick}>Удалить</Button>}

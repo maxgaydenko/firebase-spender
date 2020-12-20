@@ -12,8 +12,10 @@ export type RecordsThunkDispatch = ThunkDispatch<AppState, undefined, RecordsAct
 export type RecordsThunkAction<T> = ThunkAction<T, AppState, undefined, RecordsActionType>
 
 const obj2db = (obj: IOutlayRecord): IDbOutlayRecord => {
- const {when,price,section,tags,comment} = obj;
- return {when,price,section,tags,comment} as IDbOutlayRecord;
+//  const {when,price,section,tags,comment} = obj;
+//  return {when,price,section,tags,comment} as IDbOutlayRecord;
+ const {when,price,tags,comment} = obj;
+ return {when,price,tags,comment} as IDbOutlayRecord;
 }
 
 export const recordsLoad = (outlayId: string): RecordsThunkAction<void> => async dispatch => {
@@ -77,12 +79,12 @@ export const recordsUnload = (): RecordsThunkAction<void> => async (dispatch, ge
  dispatch({type: RECORDS_UNLOAD});
 }
 
-export const recordCreate = (when: string, price: number, section: string, tags: string[], comment?: string): RecordsThunkAction<Promise<boolean>> => async (dispatch, getState) => {
+export const recordCreate = (when: string, price: number, tags: string[], comment?: string): RecordsThunkAction<Promise<boolean>> => async (dispatch, getState) => {
  try {
   const state = getState();
   if(!state.records.dbRef)
    throw new Error("There are no records db ref");
-  const obj: IDbOutlayRecord = {when, price, section, tags, comment};
+  const obj: IDbOutlayRecord = {when, price, tags, comment};
   await state.records.dbRef.push(obj);
   return true;
   // const id = (new Date().getTime()).toString();

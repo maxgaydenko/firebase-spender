@@ -1,5 +1,5 @@
 export interface IOutlayFilter {
- section: string
+ // section: string
  tags: string[]
  comment: string
 }

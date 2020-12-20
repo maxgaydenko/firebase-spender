@@ -69,14 +69,8 @@ export const OutlayList: React.FC<IProps> = ({outlay, records, onAddClick, onCha
      <li key={`section-${i}`} className={classes.outlayListSection}>
       <ul className={classes.outlayListRecord}>
        <ListSubheader className={classes.outlayListDate}>{dateStringConvert(group.date)}</ListSubheader>
-       {group.records.map((record) => (
-        <OutlayRecord key={record.id}
-                      record={record}
-                      sections={outlay.sections}
-                      showWhen={false}
-                      showSection={outlay.sections && outlay.sections.length > 1}
-                      deleteRecord={deleteRecord}
-                      changeClick={onChangeClick}/>
+       {group.records.map(record => (
+        <OutlayRecord key={record.id} record={record} showWhen={false} deleteRecord={deleteRecord} changeClick={onChangeClick} />
        ))}
       </ul>
      </li>
@@ -84,10 +78,14 @@ export const OutlayList: React.FC<IProps> = ({outlay, records, onAddClick, onCha
    </List>
    <Container className={classes.outlaySummary} maxWidth={false}>
     <Container maxWidth={"md"} className={classes.outlaySummaryWrapper}>
-     <Button className={classes.outlaySummaryAddButton} onClick={onAddClick} startIcon={<AddIcon/>}>Добавить</Button>
-     <NumberFormat className={classes.outlaySummaryTotal} displayType={"text"} value={summ} suffix={" ₽"} thousandSeparator={" "}/>
+     <Button className={classes.outlaySummaryAddButton} onClick={onAddClick} startIcon={<AddIcon />}>
+      Добавить
+     </Button>
+     <NumberFormat className={classes.outlaySummaryTotal} displayType={"text"} value={summ || ""} suffix={""} thousandSeparator={" "} />
     </Container>
    </Container>
   </>
- )
+ );
 }
+
+// ₽

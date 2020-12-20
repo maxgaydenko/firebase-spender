@@ -1,7 +1,7 @@
 export interface IDbOutlayRecord {
  when: string
  price: number
- section: string
+ // section: string
  tags: string[]
  comment?: string
 }

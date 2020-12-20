@@ -1,4 +1,5 @@
 export interface IOutlay {
  name: string
- sections: string[]
+ currency: string
+ // sections: string[]
 }

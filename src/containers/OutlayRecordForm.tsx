@@ -3,10 +3,7 @@ import React from "react";
 import DateFnsUtils from "@date-io/date-fns";
 // material
 import {KeyboardDatePicker, MuiPickersUtilsProvider} from "@material-ui/pickers";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
-import InputLabel from "@material-ui/core/InputLabel";
 import Button from '@material-ui/core/Button';
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -60,7 +57,7 @@ interface IRedux {
  outlayTags: IOutlayTags
 }
 
-const checkForm = (price: number, when: Date | null): boolean => Boolean(when && price > 0);
+const checkForm = (price: number, when: Date | null, tags: string[], comment?: string): boolean => Boolean(when && !isNaN(price) && tags.length > 0);
 
 export const OutlayRecordForm: React.FC<IProps> = ({open, record, onClose}) => {
  const classes = useOutlayStyles();
@@ -74,7 +71,6 @@ export const OutlayRecordForm: React.FC<IProps> = ({open, record, onClose}) => {
 
  const [when, setWhen] = React.useState<Date | null>(null);
  const [price, setPrice] = React.useState<number>(0);
- const [section, setSection] = React.useState<string>("");
  const [tags, setTags] = React.useState<string[]>([]);
  const [comment, setComment] = React.useState<string>();
  const [suggestions, setSuggestions] = React.useState<IOutlayTags>({});
@@ -87,14 +83,13 @@ export const OutlayRecordForm: React.FC<IProps> = ({open, record, onClose}) => {
   if (record.when)
    setWhen(new Date(record.when));
   setPrice(record.price);
-  setSection(record.section || "");
   setTags(record.tags || []);
   setComment(record.comment || "");
  }, [record]);
 
  const addRecord = async () => {
   if (when) {
-   const ok = await dispatch(recordCreate(dateToString(when), price, section, tags, comment));
+   const ok = await dispatch(recordCreate(dateToString(when), price, tags, comment));
    if (ok)
     onClose();
   }
@@ -102,7 +97,7 @@ export const OutlayRecordForm: React.FC<IProps> = ({open, record, onClose}) => {
 
  const updateRecord = async () => {
   if (when) {
-   const ok = await dispatch(recordUpdate({...record, when: dateToString(when), price, section, tags, comment}));
+   const ok = await dispatch(recordUpdate({...record, when: dateToString(when), price, tags, comment}));
    if (ok)
     onClose();
   }
@@ -147,26 +142,18 @@ export const OutlayRecordForm: React.FC<IProps> = ({open, record, onClose}) => {
        />
       </FormControl>
       <FormControl fullWidth className={classes.outlayFormItem}>
+       {/* <TextField label={"Сумма"}
+                  value={price}
+                  onChange={e => setPrice(Number(e.target.value))}/> */}
        <TextField label={"Сумма"}
                   fullWidth
                   value={price}
                   onChange={e => setPrice(Number(e.target.value))}
                   InputProps={{
-                   inputComponent: PriceInput as any,
+                   inputComponent: PriceInput as any,                   
                   }}
        />
       </FormControl>
-      {(outlay.sections && outlay.sections.length > 1) && (
-       <FormControl fullWidth className={classes.outlayFormItem}>
-        <InputLabel shrink id={"section-label"}>Раздел</InputLabel>
-        <Select labelId={"section-label"}
-                value={section}
-                fullWidth
-                onChange={e => setSection(e.target.value as string)}>
-         {outlay.sections.map((f, i) => <MenuItem key={i} value={f}>{f}</MenuItem>)}
-        </Select>
-       </FormControl>
-      )}
       <FormControl fullWidth className={classes.outlayFormItem}>
        <TagsInput label={"Метки"}
                   outlayTags={Object.keys(suggestions)}
@@ -182,7 +169,7 @@ export const OutlayRecordForm: React.FC<IProps> = ({open, record, onClose}) => {
       </FormControl>
      </DialogContent>
      <MuiDialogActions className={classes.outlayFormActions}>
-      <Button type={"submit"} disabled={!checkForm(price, when)} variant="contained" color="primary">Сохранить</Button>
+      <Button type={"submit"} disabled={!checkForm(price, when, tags, comment)} variant="contained" color="primary">Сохранить</Button>
      </MuiDialogActions>
     </form>
    </Dialog>

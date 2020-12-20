@@ -24,14 +24,12 @@ import {useOutlayStyles} from "../styles/outlay";
 
 interface IProps {
  record: IOutlayRecord
- sections: string[]
- showSection?: boolean
  showWhen?: boolean
  changeClick: (record: IOutlayRecord) => void
  deleteRecord: (record: IOutlayRecord) => Promise<boolean>
 }
 
-export const OutlayRecord: React.FC<IProps> = ({record, sections, showSection, showWhen, changeClick, deleteRecord}) => {
+export const OutlayRecord: React.FC<IProps> = ({record, showWhen, changeClick, deleteRecord}) => {
  const classes = useOutlayStyles();
  const theme = useTheme();
  const fullScreen = useMediaQuery(theme.breakpoints.down('xs')) && false;
@@ -91,7 +89,7 @@ export const OutlayRecord: React.FC<IProps> = ({record, sections, showSection, s
      <DialogTitle id="responsive-dialog-title">Удалить запись?</DialogTitle>
      <DialogContent>
       <DialogContentText className={classes.outlayFormConfirm}>
-       Запись от <b>{dateStringConvert(record.when)}</b> на сумму <NumberFormat value={record.price} isNumericString displayType={"text"} thousandSeparator={" "} suffix={" ₽"}/> будет удалена.<br/>
+       Запись от <b>{dateStringConvert(record.when)}</b> на сумму <NumberFormat value={record.price} isNumericString displayType={"text"} thousandSeparator={" "} suffix={""}/> будет удалена.<br/>
        Восстановить её будет невозможно.
       </DialogContentText>
      </DialogContent>
@@ -104,7 +102,6 @@ export const OutlayRecord: React.FC<IProps> = ({record, sections, showSection, s
    <ListItemText className={classes.outlayRecordBox}>
     <div className={classes.outlayRecordBody}>
      <div className={classes.outlayRecordChips}>
-      {showSection && record.section && <Chip label={record.section} color={"primary"}/>}
       {record.tags && record.tags.map((tag, i) => <Chip key={i} label={tag}/>)}
      </div>
      <div className={classes.outlayRecordPrice}>
@@ -112,7 +109,7 @@ export const OutlayRecord: React.FC<IProps> = ({record, sections, showSection, s
                     isNumericString
                     displayType={"text"}
                     thousandSeparator={" "}
-                    suffix={" ₽"}/>
+                    suffix={""}/>
      </div>
     </div>
     {record.comment && <div className={"comment"}>{record.comment}</div>}

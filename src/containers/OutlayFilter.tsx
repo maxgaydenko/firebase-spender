@@ -12,7 +12,7 @@ import {Chip} from "@material-ui/core";
 import {IOutlayFilter} from "../interfaces/OutlayFilter";
 import {useOutlayStyles} from "../styles/outlay";
 
-type FilterOptionMode = 'section' | 'tag' | 'comment';
+type FilterOptionMode = 'tag' | 'comment';
 
 interface IFilterOption {
  title: string
@@ -29,7 +29,7 @@ const filterOptions = createFilterOptions({
 });
 
 interface IProps {
- outlaySections: string[]
+//  outlaySections: string[]
  outlayTags: string[]
  filter: IOutlayFilter
  updateFilter: (filter: IOutlayFilter) => void
@@ -38,8 +38,6 @@ interface IProps {
 const renderOption = (op: IFilterOption): React.ReactNode => <span>{optionLabel(op)}</span>
 
 const optionLabel = (op: IFilterOption): string => {
- if(op.mode==="section")
-  return "раздел: " + op.title;
  if(op.mode==="tag")
   return "метка: " + op.title;
  if(op.mode==="comment")
@@ -47,23 +45,14 @@ const optionLabel = (op: IFilterOption): string => {
  return op.title;
 }
 
-export const OutlayFilter: React.FC<IProps> = ({outlaySections, outlayTags, filter, updateFilter}) => {
+export const OutlayFilter: React.FC<IProps> = ({outlayTags, filter, updateFilter}) => {
  const classes = useOutlayStyles();
  const [searchVisible, setSearchVisible] = React.useState<boolean>(false);
  const options: IFilterOption[] = [];
- if (filter.section) {
-  options.push({title: filter.section, mode: 'section'});
- } else {
-  if (outlaySections)
-   for (let i = 0; i < outlaySections.length; i++)
-    options.push({title: outlaySections[i], mode: 'section'});
- }
  for (let i = 0; i < outlayTags.length; i++)
   options.push({title: outlayTags[i], mode: "tag"});
 
  const value: IFilterOption[] = [];
- if (filter.section)
-  value.push({title: filter.section, mode: "section"});
  for (let i = 0; i < filter.tags.length; i++)
   value.push({title: filter.tags[i], mode: "tag"});
  if (filter.comment)
@@ -71,17 +60,14 @@ export const OutlayFilter: React.FC<IProps> = ({outlaySections, outlayTags, filt
 
  const onChange = (items: IFilterOption[]) => {
   let tags: string[] = [];
-  let section: string = "";
   let comment: string = "";
   for (let i = 0; i < items.length; i++) {
-   if (items[i].mode === "section")
-    section = items[i].title;
    if (items[i].mode === "tag")
     tags.push(items[i].title);
    if (items[i].mode === "comment")
     comment = items[i].title;
   }
-  updateFilter({section, tags, comment});
+  updateFilter({tags, comment});
  }
 
  const searchClick = () => {
@@ -90,7 +76,7 @@ export const OutlayFilter: React.FC<IProps> = ({outlaySections, outlayTags, filt
  const searchHide = () => {
   setSearchVisible(false);
  }
- const filterBadge: number = filter.tags.length + (filter.section ? 1 : 0);
+ const filterBadge: number = filter.tags.length;
 
  return (
   <>

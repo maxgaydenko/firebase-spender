@@ -19,14 +19,14 @@ export const OutlayCreate: React.FC = () => {
  const history = useHistory();
  const outlay: IOutlay = {
   name: "",
-  sections: []
+  currency: "",
  }
  React.useEffect(() => {
   window.document.title = "Новая смета";
  }, [])
 
- const saveOutlay = async (name: string, sections: string[]): Promise<boolean> => {
-  const ok = await dispatch(outlayCreate({...outlay, name, sections}));
+ const saveOutlay = async (name: string): Promise<boolean> => {
+  const ok = await dispatch(outlayCreate({...outlay, name}));
   if(ok)
    history.push("/");
   // console.log('ok', ok);
